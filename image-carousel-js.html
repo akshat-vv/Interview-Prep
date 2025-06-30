@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .carousel-container {
+      width: 400px;
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    button {
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="carousel-container">
+  <div class="carousel-track" id="track">
+    <div class="carousel-slide"><img src="https://picsum.photos/id/1015/400/300" /></div>
+    <div class="carousel-slide"><img src="https://picsum.photos/id/1016/400/300" /></div>
+    <div class="carousel-slide"><img src="https://picsum.photos/id/1018/400/300" /></div>
+  </div>
+</div>
+
+<div class="buttons">
+  <button onclick="prev()">Prev</button>
+  <button onclick="next()">Next</button>
+</div>
+
+<script>
+  const track = document.getElementById("track");
+  const slides = document.querySelectorAll(".carousel-slide");
+  const totalSlides = slides.length;
+  let index = 0;
+
+  function updateTransform() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  function next() {
+    index = (index + 1) % totalSlides;
+    updateTransform();
+  }
+
+  function prev() {
+    index = (index - 1 + totalSlides) % totalSlides;
+    updateTransform();
+  }
+</script>
+
+</body>
+</html>

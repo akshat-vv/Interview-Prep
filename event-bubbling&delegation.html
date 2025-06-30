@@ -1,0 +1,48 @@
+
+<!-- Bubbling Example
+
+
+<div id="parent">
+    Parent Div
+
+    <button id="child">Click Me</button>
+</div>  
+ -->
+
+
+ <!-- Delegation Example -->
+
+
+ <ul id="list">
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+ </ul>
+
+
+<script>
+
+    /* 
+
+    Bubbling script
+
+    document.getElementById("parent").addEventListener("click",()=>{
+        console.log("Parent Div Clicked");
+    })
+
+
+    document.getElementById('child').addEventListener("click",(e)=>{
+        e.stopPropagation(); 
+        console.log("child clicked");
+    })
+    */ 
+
+    document.getElementById("list").addEventListener('click',(e)=>{
+        if(e.target.tagName === 'LI'){
+            console.log("You clicked", e.target.textContent)
+        }
+    })
+
+
+
+</script>

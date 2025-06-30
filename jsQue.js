@@ -1,6 +1,5 @@
 // Example 1: setTimeout with regular function vs arrow function
 
-// Using regular function — 'this' does not refer to the person object
 const person1 = {
   name: "Akshat",
   greet: function () {
@@ -10,7 +9,6 @@ const person1 = {
   },
 };
 
-// Using arrow function — 'this' refers to the lexical context (person2)
 const person2 = {
   name: "Akshat",
   greet: function () {
@@ -21,7 +19,6 @@ const person2 = {
 };
 
 // person2.greet();
-
 
 // Example 2: Flattening keys of nested object
 
@@ -39,16 +36,13 @@ function getFlattenedKeys(obj, parentKey = "", result = []) {
       result.push(fullKey);
     }
   }
-
   return result;
 }
 
 // console.log(getFlattenedKeys(nestedObj));
 
-
 // Example 3: Flatten object to key-path:value
 
-// Input: { a: { b: { c: 1 }, d: 2 }, e: 3 }
 // Output: { 'a.b.c': 1, 'a.d': 2, 'e': 3 }
 function flattenObject(obj, parentKey = "", result = {}) {
   for (const key in obj) {
@@ -61,16 +55,13 @@ function flattenObject(obj, parentKey = "", result = {}) {
       result[fullKey] = value;
     }
   }
-
   return result;
 }
 
 // console.log(flattenObject(nestedObj));
 
-
 // Example 4: Unflatten object
 
-// Input: { 'a.b.c': 1, 'a.d': 2, 'e': 3 }
 // Output: { a: { b: { c: 1 }, d: 2 }, e: 3 }
 function unflattenObject(flatObj) {
   const result = {};
@@ -99,12 +90,9 @@ function unflattenObject(flatObj) {
 // const flatObj = { 'a.b.c': 1, 'a.d': 2, 'e': 3 };
 // console.log(unflattenObject(flatObj));
 
-
 // Example 5: Invert a nested object to key-paths
 
-// Input: { a: { b: { c: 'x' }, d: 'y' }, e: 'z' }
 // Output: { x: 'a.b.c', y: 'a.d', z: 'e' }
-
 const obj = { a: { b: { c: 'x' }, d: 'y' }, e: 'z' };
 
 function invertNestedObj(obj, parentKey = '', result = {}) {
@@ -124,7 +112,8 @@ function invertNestedObj(obj, parentKey = '', result = {}) {
 
 // console.log(invertNestedObj(obj));
 
-// Example 6 : Group by a key in array of objects
+// Example 6: Group by a key in array of objects
+
 const data = [
   { type: 'fruit', name: 'apple' },
   { type: 'veg', name: 'carrot' },
@@ -132,64 +121,38 @@ const data = [
   { type: 'veg', name: 'spinach' }
 ];
 
-/* Output
-  fruit: [
-    { type: 'fruit', name: 'apple' },
-    { type: 'fruit', name: 'banana' }
-  ],
-  veg: [
-    { type: 'veg', name: 'carrot' },
-    { type: 'veg', name: 'spinach' }
-  ]
-} */
+function groupByType(data) {
+  const result = {};
 
-function groupByType(data){
-    const result = {};
+  data.forEach((d) => {
+    if (!result[d.type]) {
+      result[d.type] = [];
+    }
+    result[d.type].push(d);
+  });
 
-    data.forEach((d)=>{
-        if(!result[d.type]){
-            result[d.type] = [];
-        }
-        result[d.type].push(d);
-    })
-
-    console.log(result);
+  console.log(result);
 }
 
 // groupByType(data);
 
-// Example - 7 - Convert array of key-value pairs to object
+// Example 7: Convert array of key-value pairs to object
 
 const arr = [['a', 1], ['b', 2]];
-//output = {a:1, b:2};
 
-function convertToObj(arr){
-    const obj = {};
+function convertToObj(arr) {
+  const obj = {};
 
-    arr.forEach(([key,value])=>{
-        obj[key] = value;
-    })
+  arr.forEach(([key, value]) => {
+    obj[key] = value;
+  });
 
-    return obj;
+  return obj;
 }
 
 console.log(convertToObj(arr));
 
-
-// Example 8 - Custom Stringify
-
-// const obj = {
-//   name: "akshat",
-//   age: 25,
-//   active: true,
-//   nested: {
-//     skills: ['js', 'react'],
-//     empty: null
-//   }
-// };
-
-// Output - {"name":"akshat","age":25,"active":true,"nested":{"skills":["js","react"],"empty":null}}
-
+// Example 8: Custom Stringify
 
 function customStringify(value) {
   if (value === null) return 'null';
@@ -201,7 +164,7 @@ function customStringify(value) {
   }
 
   if (type === 'string') {
-    return `"${value}"`; // quote the string
+    return `"${value}"`;
   }
 
   if (Array.isArray(value)) {
@@ -218,15 +181,13 @@ function customStringify(value) {
     return `{${entries.join(',')}}`;
   }
 
-  // Skip unsupported types (e.g., function, undefined, symbol)
   return undefined;
 }
 
-
-// Example 9 - Simulate an in-memory DB with PUT, GET, DELETE operations
+// Example 9: In-memory DB with PUT, GET, DELETE
 
 function createInMemoryDB() {
-  const store = {}; // this is our in-memory database
+  const store = {};
 
   return {
     put(key, value) {
@@ -261,26 +222,16 @@ function createInMemoryDB() {
   };
 }
 
-
 // const db = createInMemoryDB();
-
 // db.put("name", "Akshat");
 // db.put("age", 25);
-
-// db.get("name");     // Output: Akshat
-// db.get("city");     // Output: not found
-
-// db.delete("age");   // age removed
-// db.delete("city");  // city not found
-
+// db.get("name");
+// db.get("city");
+// db.delete("age");
+// db.delete("city");
 // db.print();
-// // Output:
-// // {
-// //   "name": "Akshat"
-// // }
 
-
-// Example - 10 - 
+// Example 10: Domain operations (PUT, GET, COUNT)
 
 const operations = [
   ["PUT", "www.apple.com", "10.20.30.40"],
@@ -292,21 +243,19 @@ const operations = [
   ["COUNT", "com"]
 ];
 
-// output = ["null", "10.20.30.40", "2", "3"]
-
 function processDomainOperations(operations) {
   const result = [];
   const memory = {};
 
   function put(domain, ip) {
-    memory[domain] = ip; // Allow overwrite
+    memory[domain] = ip;
   }
 
   function get(domain) {
     if (memory.hasOwnProperty(domain)) {
       result.push(memory[domain]);
     } else {
-      result.push("null"); // must be a string!
+      result.push("null");
     }
   }
 
@@ -317,13 +266,12 @@ function processDomainOperations(operations) {
         count++;
       }
     }
-    result.push(count.toString()); // must return string count
+    result.push(count.toString());
   }
 
   for (const op of operations) {
     const [action, domain, ip] = op;
 
-    // Validate inputs (all strings)
     if (!op.every(item => typeof item === 'string')) continue;
 
     switch (action) {
@@ -341,6 +289,5 @@ function processDomainOperations(operations) {
 
   return result;
 }
-
 
 console.log(processDomainOperations(operations));

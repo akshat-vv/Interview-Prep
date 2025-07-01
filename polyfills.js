@@ -1,216 +1,172 @@
-// polyfill -
-
-// 1. Map
-// 2. Filter
-// 3. Reduce
-// 4. Flat
-// 5. some
-// 6. every
-// 7. find
-// 8. bind
+// JavaScript Polyfills - Custom implementations of native methods
 
 const arr = [1, 2, 3, 4];
 
-// 1. Map -> myMap
+// 1. Array.prototype.map
 Array.prototype.myMap = function (callback) {
-  let result = [];
-
-  for (let i = 0; i < this.length; i++) {
-    result.push(callback(this[i], i, this));
-  }
-
-  return result;
+    let result = [];
+    for (let i = 0; i < this.length; i++) {
+        result.push(callback(this[i], i, this));
+    }
+    return result;
 };
-// const ans = arr.myMap((a) => a * 2);
-// console.log(ans);
 
-// 2. Filter -> myFilter
+// 2. Array.prototype.filter
 Array.prototype.myFilter = function (callback) {
-  let result = [];
-
-  for (let i = 0; i < this.length; i++) {
-    if (callback(this[i], i, this)) {
-      result.push(this[i]);
+    let result = [];
+    for (let i = 0; i < this.length; i++) {
+        if (callback(this[i], i, this)) {
+            result.push(this[i]);
+        }
     }
-  }
-
-  return result;
+    return result;
 };
-// const ans = arr.myFilter((a) => a >= 3);
-// console.log(ans);
 
-// 3. Reduce -> myReduce
+// 3. Array.prototype.reduce
 Array.prototype.myReduce = function (callback, initialValue) {
-  let acc;
-  let startIndex;
+    let acc;
+    let startIndex;
 
-  if (initialValue !== undefined) {
-    acc = initialValue;
-    startIndex = 0;
-  } else {
-    acc = this[0];
-    startIndex = 1;
-  }
-
-  for (let i = startIndex; i < this.length; i++) {
-    acc = callback(acc, this[i], i, this);
-  }
-
-  return acc;
-};
-// const result = arr.myReduce((acc, val) => acc + val, 10);
-// console.log(result); // 20
-
-// 4. Flat -> myFlat
-const nArr = [1, [2, 3], 4, 5, [6, [7, 8, [9, 10]]]];
-
-Array.prototype.myFlat = function (depth = 1) {
-  let result = [];
-
-  for (let i = 0; i < this.length; i++) {
-    if (Array.isArray(this[i]) && depth > 0) {
-      result.push(...this[i].myFlat(depth - 1));
+    if (initialValue !== undefined) {
+        acc = initialValue;
+        startIndex = 0;
     } else {
-      result.push(this[i]);
+        acc = this[0];
+        startIndex = 1;
     }
-  }
 
-  return result;
+    for (let i = startIndex; i < this.length; i++) {
+        acc = callback(acc, this[i], i, this);
+    }
+
+    return acc;
 };
-// const ans = nArr.myFlat(2);
-// console.log(ans);
 
-// 5. ForEach -> myForEach
+// 4. Array.prototype.flat
+Array.prototype.myFlat = function (depth = 1) {
+    let result = [];
+    for (let i = 0; i < this.length; i++) {
+        if (Array.isArray(this[i]) && depth > 0) {
+            result.push(...this[i].myFlat(depth - 1));
+        } else {
+            result.push(this[i]);
+        }
+    }
+    return result;
+};
+
+// 5. Array.prototype.forEach
 Array.prototype.myForEach = function (callback) {
-  for (let i = 0; i < this.length; i++) {
-    callback(this[i], i, this);
-  }
+    for (let i = 0; i < this.length; i++) {
+        callback(this[i], i, this);
+    }
 };
-// arr.myForEach((a) => console.log(a * 3));
 
-// 6. Find -> myFind
+// 6. Array.prototype.find
 Array.prototype.myFind = function (callback) {
-  for (let i = 0; i < this.length; i++) {
-    if (callback(this[i], i, this)) return this[i];
-  }
-
-  return undefined;
+    for (let i = 0; i < this.length; i++) {
+        if (callback(this[i], i, this)) return this[i];
+    }
+    return undefined;
 };
-// const ans = arr.myFind((a) => a % 3 === 0);
-// console.log(ans);
 
-// 7. Some -> mySome
+// 7. Array.prototype.some
 Array.prototype.mySome = function (callback) {
-  for (let i = 0; i < this.length; i++) {
-    if (callback(this[i], i, this)) return true;
-  }
-
-  return false;
+    for (let i = 0; i < this.length; i++) {
+        if (callback(this[i], i, this)) return true;
+    }
+    return false;
 };
-// console.log(arr.mySome((a) => a > 3)); // true
 
-// 8. Every -> myEvery
+// 8. Array.prototype.every
 Array.prototype.myEvery = function (callback) {
-  for (let i = 0; i < this.length; i++) {
-    if (!callback(this[i], i, this)) return false;
-  }
-
-  return true;
+    for (let i = 0; i < this.length; i++) {
+        if (!callback(this[i], i, this)) return false;
+    }
+    return true;
 };
-// console.log(arr.myEvery((a) => a > 0)); // true
 
-// 9. Bind -> myBind
+// 9. Function.prototype.bind
 Function.prototype.myBind = function (context, ...args) {
-  const fn = this;
-
-  return function (...restArgs) {
-    return fn.apply(context, [...args, ...restArgs]);
-  };
+    const fn = this;
+    return function (...restArgs) {
+        return fn.apply(context, [...args, ...restArgs]);
+    };
 };
 
-// Example:
-// const person = { name: 'Akshat' };
-// function greet(greeting) { console.log(`${greeting}, ${this.name}`); }
-// const boundGreet = greet.myBind(person, 'Hello');
-// boundGreet(); // Hello, Akshat
-
-// 10. Promise.all -> myPromiseAll
+// 10. Promise.all
 function myPromiseAll(pArr) {
-  const result = [];
-  let completed = 0;
+    const result = [];
+    let completed = 0;
 
-  return new Promise((resolve, reject) => {
-    if (pArr.length === 0) return resolve([]);
+    return new Promise((resolve, reject) => {
+        if (pArr.length === 0) return resolve([]);
 
-    for (let i = 0; i < pArr.length; i++) {
-      Promise.resolve(pArr[i])
-        .then((data) => {
-          result[i] = data;
-          completed++;
-
-          if (completed === pArr.length) {
-            resolve(result);
-          }
-        })
-        .catch((err) => reject(err));
-    }
-  });
+        for (let i = 0; i < pArr.length; i++) {
+            Promise.resolve(pArr[i])
+                .then((data) => {
+                    result[i] = data;
+                    completed++;
+                    if (completed === pArr.length) {
+                        resolve(result);
+                    }
+                })
+                .catch((err) => reject(err));
+        }
+    });
 }
 
-// 11. Promise.race -> myPromiseRace
+// 11. Promise.race
 function myPromiseRace(pArr) {
-  return new Promise((resolve, reject) => {
-    for (let i = 0; i < pArr.length; i++) {
-      Promise.resolve(pArr[i])
-        .then((data) => resolve(data))
-        .catch((err) => reject(err));
-    }
-  });
+    return new Promise((resolve, reject) => {
+        for (let i = 0; i < pArr.length; i++) {
+            Promise.resolve(pArr[i])
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        }
+    });
 }
 
-// 12. Promise.allSettled -> myPromiseAllSettled
+// 12. Promise.allSettled
 function myPromiseAllSettled(pArr) {
-  const result = [];
-  let settledCount = 0;
+    const result = [];
+    let settledCount = 0;
 
-  return new Promise((resolve) => {
-    if (pArr.length === 0) return resolve([]);
+    return new Promise((resolve) => {
+        if (pArr.length === 0) return resolve([]);
 
-    for (let i = 0; i < pArr.length; i++) {
-      Promise.resolve(pArr[i])
-        .then((value) => {
-          result[i] = {
-            status: 'fulfilled',
-            value,
-          };
-        })
-        .catch((reason) => {
-          result[i] = {
-            status: 'rejected',
-            reason,
-          };
-        })
-        .finally(() => {
-          settledCount++;
-          if (settledCount === pArr.length) {
-            resolve(result);
-          }
-        });
-    }
-  });
+        for (let i = 0; i < pArr.length; i++) {
+            Promise.resolve(pArr[i])
+                .then((value) => {
+                    result[i] = { status: 'fulfilled', value };
+                })
+                .catch((reason) => {
+                    result[i] = { status: 'rejected', reason };
+                })
+                .finally(() => {
+                    settledCount++;
+                    if (settledCount === pArr.length) {
+                        resolve(result);
+                    }
+                });
+        }
+    });
 }
 
-// ✅ Sample for promises
-const pArr = [
-  Promise.resolve("FIRST"),
-  new Promise((res) => setTimeout(() => res("SECOND"), 3000)),
-  Promise.resolve("THIRD"),
-  Promise.reject("FOURTH"),
-];
+// 13. Array.prototype.concat
+Array.prototype.myConcat = function(...args) {
+    const result = [...this];
+    for (const item of args) {
+        if (Array.isArray(item)) {
+            result.push(...item);
+        } else {
+            result.push(item);
+        }
+    }
+    return result;
+};
 
-// myPromiseAll(pArr).then(console.log).catch(console.error);
-// myPromiseRace(pArr).then(console.log).catch(console.error);
-
-myPromiseAllSettled(pArr).then((d) => console.log(d));
-
-// Promise.allSettled(pArr).then(console.log).catch(console.error);
+// Test examples (uncomment to run):
+// console.log(arr.myMap(x => x * 2));
+// console.log(arr.myFilter(x => x > 2));
+// console.log(arr.myReduce((acc, val) => acc + val, 0));

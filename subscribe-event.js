@@ -1,29 +1,32 @@
+// Publish-Subscribe Pattern - Event system for decoupled communication
+
 class PubSub {
-    constructor(){
+    constructor() {
         this.events = {};
     }
 
-    subscribe(eventName, callback){
-        if(!this.events[eventName]){
+    subscribe(eventName, callback) {
+        if (!this.events[eventName]) {
             this.events[eventName] = [];
         }
 
         this.events[eventName].push(callback);
 
-        return ()=>{
-            this.events[eventName] = this.events[eventName].filter((cb)=>cb !== callback);
-        }
+        // Return unsubscribe function
+        return () => {
+            this.events[eventName] = this.events[eventName].filter(cb => cb !== callback);
+        };
     }
 
-    emit(eventName, ...args){
+    emit(eventName, ...args) {
         const callbacks = this.events[eventName] || [];
-        for(const cb of callbacks){
+        for (const cb of callbacks) {
             cb(...args);
         }
     }
 }
 
-
+// Example usage:
 const pubSub = new PubSub();
 
 const unsub1 = pubSub.subscribe("event1", data => console.log("👂 Listener 1:", data));

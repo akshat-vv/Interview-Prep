@@ -1,71 +1,915 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <style>
-    .carousel-container {
-      width: 400px;
-      overflow: hidden;
-      margin: auto;
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-    }
-
-    .carousel-slide img {
-      width: 100%;
-    }
-
-    .buttons {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    button {
-      margin: 0 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel - JavaScript Implementation</title>
+    <style>
+        /**
+         * CAROUSEL STYLING - INTERVIEW CONCEPTS
+         * 
+         * This CSS demonstrates key concepts for building responsive carousels:
+         * 1. Flexbox for horizontal layout
+         * 2. CSS transforms for smooth animations
+         * 3. Overflow hidden for viewport effect
+         * 4. Responsive design principles
+         */
+        
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .explanation {
+            background-color: #fff3e0;
+            padding: 20px;
+            border-left: 4px solid #ff9800;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .code-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        /**
+         * CAROUSEL CONTAINER
+         * 
+         * The container defines the viewport - only one slide visible at a time.
+         * Key properties:
+         * - Fixed width for consistent sizing
+         * - overflow: hidden to hide slides outside viewport
+         * - margin: auto for centering
+         */
+        .carousel-container {
+            width: 400px;
+            overflow: hidden; /* Hide slides outside the viewport */
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+        
+        /**
+         * CAROUSEL TRACK
+         * 
+         * The track contains all slides and moves horizontally.
+         * Key properties:
+         * - display: flex for horizontal layout
+         * - transition for smooth animation
+         * - transform: translateX() for positioning
+         */
+        .carousel-track {
+            display: flex; /* Arrange slides horizontally */
+            transition: transform 0.5s ease; /* Smooth slide animation */
+            /* transform: translateX() will be set by JavaScript */
+        }
+        
+        /**
+         * CAROUSEL SLIDE
+         * 
+         * Each slide takes full width of container.
+         * Key properties:
+         * - min-width: 100% ensures each slide fills viewport
+         * - flex-shrink: 0 prevents slides from shrinking
+         */
+        .carousel-slide {
+            min-width: 100%; /* Each slide takes full container width */
+            flex-shrink: 0; /* Prevent slides from shrinking */
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover; /* Maintain aspect ratio while filling space */
+            display: block;
+        }
+        
+        /**
+         * NAVIGATION BUTTONS
+         */
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            margin: 0 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: #2196f3;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1976d2;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #757575;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #616161;
+        }
+        
+        /**
+         * INDICATORS (DOTS)
+         */
+        .indicators {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .indicator.active {
+            background-color: #2196f3;
+        }
+        
+        .indicator:hover {
+            background-color: #999;
+        }
+        
+        /**
+         * RESPONSIVE DESIGN
+         */
+        @media (max-width: 480px) {
+            .carousel-container {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .carousel-slide img {
+                height: 200px;
+            }
+            
+            button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+        }
+        
+        /**
+         * ADVANCED CAROUSEL FEATURES
+         */
+        .carousel-advanced {
+            position: relative;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        
+        .carousel-nav:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .carousel-nav.prev {
+            left: 10px;
+        }
+        
+        .carousel-nav.next {
+            right: 10px;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
+    <h1>🎠 Image Carousel - JavaScript Implementation</h1>
+    
+    <div class="explanation">
+        <h2>📚 What You'll Learn</h2>
+        <p><strong>Carousel Logic:</strong> How to implement smooth sliding animations</p>
+        <p><strong>CSS Transforms:</strong> Using translateX() for positioning</p>
+        <p><strong>Modular Arithmetic:</strong> Circular navigation with wrap-around</p>
+        <p><strong>Event Handling:</strong> Button clicks and keyboard navigation</p>
+        <p><strong>Responsive Design:</strong> Making carousels work on all devices</p>
+    </div>
 
-<div class="carousel-container">
-  <div class="carousel-track" id="track">
-    <div class="carousel-slide"><img src="https://picsum.photos/id/1015/400/300" /></div>
-    <div class="carousel-slide"><img src="https://picsum.photos/id/1016/400/300" /></div>
-    <div class="carousel-slide"><img src="https://picsum.photos/id/1018/400/300" /></div>
-  </div>
-</div>
+    <!-- BASIC CAROUSEL IMPLEMENTATION -->
+    <div class="carousel-container">
+        <div class="carousel-track" id="track">
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/id/1015/400/300" alt="Landscape 1" />
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/id/1016/400/300" alt="Landscape 2" />
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/id/1018/400/300" alt="Landscape 3" />
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/id/1019/400/300" alt="Landscape 4" />
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/id/1020/400/300" alt="Landscape 5" />
+            </div>
+        </div>
+    </div>
 
-<div class="buttons">
-  <button onclick="prev()">Prev</button>
-  <button onclick="next()">Next</button>
-</div>
+    <div class="buttons">
+        <button class="btn-primary" onclick="prev()">⬅️ Previous</button>
+        <button class="btn-primary" onclick="next()">Next ➡️</button>
+        <button class="btn-secondary" onclick="goToSlide(0)">Go to First</button>
+        <button class="btn-secondary" onclick="toggleAutoplay()">🔄 Toggle Autoplay</button>
+    </div>
+    
+    <!-- SLIDE INDICATORS -->
+    <div class="indicators" id="indicators">
+        <!-- Indicators will be generated by JavaScript -->
+    </div>
+    
+    <!-- SLIDE COUNTER -->
+    <div style="text-align: center; margin-top: 10px;">
+        <span id="slide-counter">1 / 5</span>
+    </div>
 
-<script>
-  const track = document.getElementById("track");
-  const slides = document.querySelectorAll(".carousel-slide");
-  const totalSlides = slides.length;
-  let index = 0;
+    <div class="explanation">
+        <h3>🔧 How It Works</h3>
+        <p><strong>Transform Property:</strong> We use <code>translateX()</code> to move the track horizontally</p>
+        <p><strong>Percentage Calculation:</strong> Each slide moves by 100% of container width</p>
+        <p><strong>Modular Arithmetic:</strong> <code>(index + 1) % total</code> for wrap-around navigation</p>
+        <p><strong>Smooth Animation:</strong> CSS transitions handle the sliding effect</p>
+    </div>
 
-  function updateTransform() {
-    track.style.transform = `translateX(-${index * 100}%)`;
-  }
+    <div class="code-section">
+        <h4>Core Carousel Logic:</h4>
+        <pre>
+// Current slide index (0-based)
+let currentIndex = 0;
 
-  function next() {
-    index = (index + 1) % totalSlides;
+// Move to specific slide
+function updateTransform() {
+    const track = document.getElementById("track");
+    // Move track by currentIndex * 100% to the left
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+}
+
+// Next slide with wrap-around
+function next() {
+    currentIndex = (currentIndex + 1) % totalSlides;
     updateTransform();
-  }
+}
 
-  function prev() {
-    index = (index - 1 + totalSlides) % totalSlides;
+// Previous slide with wrap-around  
+function prev() {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
     updateTransform();
-  }
-</script>
+}
+        </pre>
+    </div>
 
+    <script>
+        /**
+         * IMAGE CAROUSEL IMPLEMENTATION - INTERVIEW QUESTION
+         * 
+         * What is an Image Carousel?
+         * A carousel is a UI component that displays multiple images/content
+         * in a rotating slideshow format, showing one item at a time with
+         * navigation controls to move between items.
+         * 
+         * Key Concepts:
+         * 1. Transform-based positioning using translateX()
+         * 2. Modular arithmetic for circular navigation
+         * 3. Event handling for user interactions
+         * 4. Smooth CSS transitions for animations
+         * 5. Responsive design considerations
+         * 
+         * Real-world Applications:
+         * - Product image galleries in e-commerce
+         * - Hero banners on websites
+         * - Portfolio showcases
+         * - News article sliders
+         * - Social media story viewers
+         * - Mobile app onboarding screens
+         * 
+         * Interview Topics:
+         * - DOM manipulation and CSS transforms
+         * - Event handling and user interactions
+         * - Performance optimization techniques
+         * - Accessibility considerations
+         * - Touch/swipe gesture support
+         * - Responsive design implementation
+         */
+
+        // Get DOM elements
+        const track = document.getElementById("track");
+        const slides = document.querySelectorAll(".carousel-slide");
+        const totalSlides = slides.length;
+        const slideCounter = document.getElementById("slide-counter");
+        const indicatorsContainer = document.getElementById("indicators");
+        
+        // Carousel state
+        let currentIndex = 0;
+        let autoplayInterval = null;
+        let isAutoplayEnabled = false;
+        
+        /**
+         * CORE CAROUSEL FUNCTIONS
+         */
+        
+        /**
+         * UPDATE TRANSFORM
+         * 
+         * This is the heart of the carousel - it moves the track to show
+         * the current slide by applying a CSS transform.
+         * 
+         * Algorithm:
+         * 1. Calculate offset: currentIndex * 100% (each slide is 100% wide)
+         * 2. Apply translateX() transform to move track horizontally
+         * 3. CSS transition handles smooth animation
+         * 
+         * Why translateX()?
+         * - Hardware accelerated (uses GPU)
+         * - Doesn't trigger layout recalculation
+         * - Smooth 60fps animations
+         * - Better performance than changing left/margin properties
+         */
+        function updateTransform() {
+            // Calculate the offset as a percentage
+            const offset = currentIndex * 100;
+            
+            // Apply transform to move the track
+            track.style.transform = `translateX(-${offset}%)`;
+            
+            // Update UI indicators
+            updateSlideCounter();
+            updateIndicators();
+            
+            console.log(`📍 Moved to slide ${currentIndex + 1}/${totalSlides}`);
+        }
+        
+        /**
+         * NEXT SLIDE FUNCTION
+         * 
+         * Moves to the next slide with wrap-around behavior.
+         * Uses modular arithmetic to cycle back to first slide.
+         * 
+         * Modular Arithmetic Explanation:
+         * (currentIndex + 1) % totalSlides
+         * - If currentIndex = 2, totalSlides = 5: (2 + 1) % 5 = 3
+         * - If currentIndex = 4, totalSlides = 5: (4 + 1) % 5 = 0 (wraps to start)
+         */
+        function next() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateTransform();
+            
+            // Reset autoplay timer if active
+            if (isAutoplayEnabled) {
+                resetAutoplay();
+            }
+        }
+        
+        /**
+         * PREVIOUS SLIDE FUNCTION
+         * 
+         * Moves to the previous slide with wrap-around behavior.
+         * Handles negative modulo correctly by adding totalSlides.
+         * 
+         * Negative Modulo Handling:
+         * (currentIndex - 1 + totalSlides) % totalSlides
+         * - If currentIndex = 0: (-1 + 5) % 5 = 4 (wraps to end)
+         * - If currentIndex = 2: (1 + 5) % 5 = 1
+         */
+        function prev() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateTransform();
+            
+            // Reset autoplay timer if active
+            if (isAutoplayEnabled) {
+                resetAutoplay();
+            }
+        }
+        
+        /**
+         * GO TO SPECIFIC SLIDE
+         * 
+         * Jumps directly to a specific slide index.
+         * Useful for indicator clicks or programmatic navigation.
+         * 
+         * @param {number} index - Target slide index (0-based)
+         */
+        function goToSlide(index) {
+            // Validate index bounds
+            if (index >= 0 && index < totalSlides) {
+                currentIndex = index;
+                updateTransform();
+                
+                // Reset autoplay timer if active
+                if (isAutoplayEnabled) {
+                    resetAutoplay();
+                }
+            } else {
+                console.warn(`Invalid slide index: ${index}. Must be 0-${totalSlides - 1}`);
+            }
+        }
+        
+        /**
+         * UI UPDATE FUNCTIONS
+         */
+        
+        /**
+         * UPDATE SLIDE COUNTER
+         * 
+         * Updates the "X / Y" counter display
+         */
+        function updateSlideCounter() {
+            slideCounter.textContent = `${currentIndex + 1} / ${totalSlides}`;
+        }
+        
+        /**
+         * UPDATE INDICATORS
+         *
+         * Updates the dot indicators to show current active slide
+         */
+        function updateIndicators() {
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+        
+        /**
+         * CREATE INDICATORS
+         *
+         * Generates clickable dot indicators for each slide
+         */
+        function createIndicators() {
+            indicatorsContainer.innerHTML = ''; // Clear existing indicators
+            
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('span');
+                indicator.className = 'indicator';
+                indicator.addEventListener('click', () => goToSlide(i));
+                indicatorsContainer.appendChild(indicator);
+            }
+            
+            // Set first indicator as active
+            updateIndicators();
+        }
+        
+        /**
+         * AUTOPLAY FUNCTIONALITY
+         */
+        
+        /**
+         * START AUTOPLAY
+         *
+         * Automatically advances slides at regular intervals
+         */
+        function startAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+            }
+            
+            autoplayInterval = setInterval(() => {
+                next();
+            }, 3000); // Change slide every 3 seconds
+            
+            isAutoplayEnabled = true;
+            console.log('🔄 Autoplay started');
+        }
+        
+        /**
+         * STOP AUTOPLAY
+         */
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+            
+            isAutoplayEnabled = false;
+            console.log('⏹️ Autoplay stopped');
+        }
+        
+        /**
+         * TOGGLE AUTOPLAY
+         */
+        function toggleAutoplay() {
+            if (isAutoplayEnabled) {
+                stopAutoplay();
+            } else {
+                startAutoplay();
+            }
+        }
+        
+        /**
+         * RESET AUTOPLAY
+         *
+         * Restarts autoplay timer when user interacts with carousel
+         */
+        function resetAutoplay() {
+            if (isAutoplayEnabled) {
+                stopAutoplay();
+                startAutoplay();
+            }
+        }
+        
+        /**
+         * KEYBOARD NAVIGATION
+         *
+         * Adds keyboard support for accessibility
+         */
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                // Only handle keys when carousel is in focus or no other input is focused
+                if (document.activeElement.tagName === 'INPUT' ||
+                    document.activeElement.tagName === 'TEXTAREA') {
+                    return;
+                }
+                
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        prev();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        next();
+                        break;
+                    case ' ': // Spacebar
+                        e.preventDefault();
+                        toggleAutoplay();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides - 1);
+                        break;
+                }
+            });
+        }
+        
+        /**
+         * TOUCH/SWIPE SUPPORT
+         *
+         * Adds mobile touch gesture support
+         */
+        function setupTouchNavigation() {
+            let startX = 0;
+            let startY = 0;
+            let endX = 0;
+            let endY = 0;
+            const minSwipeDistance = 50;
+            
+            track.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            track.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                endY = e.changedTouches[0].clientY;
+                
+                const deltaX = endX - startX;
+                const deltaY = endY - startY;
+                
+                // Check if horizontal swipe is more significant than vertical
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (Math.abs(deltaX) > minSwipeDistance) {
+                        if (deltaX > 0) {
+                            prev(); // Swipe right = previous slide
+                        } else {
+                            next(); // Swipe left = next slide
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
+        
+        /**
+         * ADVANCED CAROUSEL FEATURES
+         */
+        
+        /**
+         * LAZY LOADING
+         *
+         * Load images only when they're about to be shown
+         */
+        function setupLazyLoading() {
+            const images = document.querySelectorAll('.carousel-slide img');
+            
+            images.forEach((img, index) => {
+                // Store original src in data attribute
+                const originalSrc = img.src;
+                img.dataset.src = originalSrc;
+                
+                // Only load first image immediately
+                if (index !== 0) {
+                    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+';
+                }
+            });
+        }
+        
+        /**
+         * LOAD IMAGE
+         *
+         * Load image for specific slide
+         */
+        function loadImage(index) {
+            const img = slides[index].querySelector('img');
+            if (img && img.dataset.src && img.src !== img.dataset.src) {
+                img.src = img.dataset.src;
+                console.log(`🖼️ Loaded image for slide ${index + 1}`);
+            }
+        }
+        
+        /**
+         * PRELOAD ADJACENT IMAGES
+         *
+         * Preload images for current, next, and previous slides
+         */
+        function preloadAdjacentImages() {
+            // Load current slide
+            loadImage(currentIndex);
+            
+            // Load next slide
+            const nextIndex = (currentIndex + 1) % totalSlides;
+            loadImage(nextIndex);
+            
+            // Load previous slide
+            const prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            loadImage(prevIndex);
+        }
+        
+        /**
+         * PERFORMANCE OPTIMIZATION
+         */
+        
+        /**
+         * DEBOUNCE FUNCTION
+         *
+         * Prevents rapid-fire function calls
+         */
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        /**
+         * THROTTLE FUNCTION
+         *
+         * Limits function execution frequency
+         */
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+        
+        /**
+         * RESIZE HANDLER
+         *
+         * Handle window resize events
+         */
+        const handleResize = debounce(() => {
+            // Recalculate positions on resize
+            updateTransform();
+            console.log('📐 Carousel resized');
+        }, 250);
+        
+        /**
+         * INITIALIZATION
+         *
+         * Set up the carousel when page loads
+         */
+        function initCarousel() {
+            console.log('🎠 Initializing carousel...');
+            
+            // Create indicators
+            createIndicators();
+            
+            // Set initial state
+            updateTransform();
+            
+            // Set up event listeners
+            setupKeyboardNavigation();
+            setupTouchNavigation();
+            
+            // Set up lazy loading (commented out for demo)
+            // setupLazyLoading();
+            
+            // Set up resize handler
+            window.addEventListener('resize', handleResize);
+            
+            // Preload adjacent images
+            preloadAdjacentImages();
+            
+            console.log('✅ Carousel initialized successfully');
+        }
+        
+        /**
+         * ACCESSIBILITY ENHANCEMENTS
+         */
+        
+        /**
+         * ADD ARIA ATTRIBUTES
+         *
+         * Improve accessibility for screen readers
+         */
+        function setupAccessibility() {
+            // Add ARIA attributes to carousel
+            track.setAttribute('role', 'region');
+            track.setAttribute('aria-label', 'Image carousel');
+            
+            // Add ARIA attributes to slides
+            slides.forEach((slide, index) => {
+                slide.setAttribute('role', 'group');
+                slide.setAttribute('aria-roledescription', 'slide');
+                slide.setAttribute('aria-label', `Slide ${index + 1} of ${totalSlides}`);
+            });
+            
+            // Add ARIA attributes to indicators
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.setAttribute('role', 'button');
+                indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
+            });
+        }
+        
+        /**
+         * CAROUSEL ANALYTICS
+         *
+         * Track user interactions for analytics
+         */
+        function trackSlideView(slideIndex) {
+            // In a real application, you would send this data to your analytics service
+            console.log(`📊 Analytics: Viewed slide ${slideIndex + 1}`);
+            
+            // Example: Google Analytics event
+            // gtag('event', 'carousel_slide_view', {
+            //     slide_index: slideIndex,
+            //     slide_title: slides[slideIndex].querySelector('img').alt
+            // });
+        }
+        
+        /**
+         * ERROR HANDLING
+         */
+        
+        /**
+         * HANDLE IMAGE LOAD ERRORS
+         *
+         * Provide fallback for broken images
+         */
+        function setupImageErrorHandling() {
+            const images = document.querySelectorAll('.carousel-slide img');
+            
+            images.forEach((img, index) => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Failed to load image for slide ${index + 1}`);
+                    
+                    // Set fallback image
+                    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1IiBzdHJva2U9IiNkZGQiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgTm90IEZvdW5kPC90ZXh0Pjwvc3ZnPg==';
+                    img.alt = 'Image not found';
+                });
+            });
+        }
+        
+        /**
+         * DOCUMENT READY
+         *
+         * Initialize carousel when DOM is loaded
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            initCarousel();
+            setupAccessibility();
+            setupImageErrorHandling();
+            
+            // Track initial slide view
+            trackSlideView(currentIndex);
+        });
+        
+        /**
+         * INTERVIEW PREPARATION NOTES
+         *
+         * Common Questions and Concepts:
+         *
+         * Q: How do you implement smooth sliding animations?
+         * A: Use CSS transforms (translateX) with transitions for hardware acceleration
+         *
+         * Q: How do you handle wrap-around navigation?
+         * A: Use modular arithmetic: (index + 1) % total for next, (index - 1 + total) % total for prev
+         *
+         * Q: How do you optimize carousel performance?
+         * A: - Use transforms instead of changing position properties
+         *    - Implement lazy loading for images
+         *    - Debounce resize events
+         *    - Use requestAnimationFrame for smooth animations
+         *
+         * Q: How do you make carousels accessible?
+         * A: - Add ARIA attributes and roles
+         *    - Support keyboard navigation
+         *    - Provide alternative text for images
+         *    - Ensure proper focus management
+         *
+         * Q: How do you add touch/swipe support?
+         * A: Listen for touchstart/touchend events and calculate swipe direction/distance
+         *
+         * Q: How do you handle responsive design?
+         * A: - Use flexible units (%, vw, vh)
+         *    - Implement breakpoints with media queries
+         *    - Adjust slide sizes and navigation for mobile
+         *
+         * Q: What are common carousel performance issues?
+         * A: - Too many DOM manipulations
+         *    - Loading all images at once
+         *    - Not using hardware acceleration
+         *    - Memory leaks from event listeners
+         *
+         * ADVANCED FEATURES TO IMPLEMENT:
+         *
+         * 1. Infinite loop carousel (duplicate first/last slides)
+         * 2. Variable slide widths
+         * 3. Multiple slides visible at once
+         * 4. Vertical carousels
+         * 5. 3D carousel effects
+         * 6. Video slide support
+         * 7. Thumbnail navigation
+         * 8. Fullscreen mode
+         * 9. Social sharing integration
+         * 10. Deep linking to specific slides
+         */
+    </script>
 </body>
 </html>

@@ -1,0 +1,37 @@
+.toast-container{
+    min-width: 20%;
+    height: 50px;
+    background-color: rgb(119, 205, 119);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(146, 146, 146, 0.3);
+      animation: fadeInOut 3s ease-in-out;
+}
+
+.toast-button{
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}

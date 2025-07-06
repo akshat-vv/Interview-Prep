@@ -67,6 +67,91 @@
   transform: translate(-50%, -50%);
 }
 
+.board-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  background-color: rgb(215, 215, 215);
+  width: 200px;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  height: 100%;
+}
+
+.card {
+  background-color: rgb(236, 236, 236);
+  padding: 20px;
+  max-width: 200px;
+}
+
+.myModal{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 10000;
+  width: 100%;
+  background-color: #3333334b;
+}
+
+.modal-container{
+  position: absolute;
+  width: 500px;
+  background-color: white;
+  height: 200px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.signal{
+  display: flex;
+  flex-direction: column;
+  /* background-color: black; */
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  
+}
+
+.light{
+  width: 100px;
+  height: 100px;
+  background-color: grey;
+  border-radius: 50%;
+}
+
+.red{
+  background-color: red;
+}
+.green{
+  background-color: green;
+}
+.orange{
+  background-color: orange;
+}
+
+.progressBar{
+  width: 500px;
+  border: 1px solid black;
+  height: 20px;
+}
+
+.bar{
+  background-color: green;
+  height: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

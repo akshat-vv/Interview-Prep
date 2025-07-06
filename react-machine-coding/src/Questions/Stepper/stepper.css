@@ -1,0 +1,88 @@
+.stepper-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+  font-family: sans-serif;
+}
+
+.stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.pill-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.pill-content {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  background-color: grey;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.pill-line {
+  position: absolute;
+  height: 2px;
+  width: 70px;
+  background-color: #2196f3; /* or black */
+  left: calc(100% + 4px); /* slight overlap fix */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.pill-label {
+  font-size: 14px;
+  text-align: center;
+}
+
+.done {
+  background-color: rgb(46, 151, 255);
+}
+
+.active {
+  background-color: greenyellow;
+  color: black;
+}
+
+.stepper-content {
+  min-height: 100px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 300px;
+  text-align: center;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.stepper-controllers {
+  display: flex;
+  gap: 10px;
+}
+
+.stepper-controllers button {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}

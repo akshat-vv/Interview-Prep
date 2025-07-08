@@ -8,7 +8,6 @@ import NestedCheckbox from "./Questions/NestedCheckbox";
 import AutoComplete from "./Questions/AutoComplete";
 import Chessboard from "./Questions/Chessboard";
 import JiraBoard from "./Questions/JiraBoard";
-import Moda from "./Questions/Moda";
 import UseMemo from "./Questions/UseMemo";
 import UseCallback from "./Questions/UseCallback";
 import ContextExample from "./Questions/Context/ContextExample";
@@ -25,7 +24,6 @@ import ReduxComp from "./Questions/ReduxExample/ReduxComp";
 import TodoApp from "./Questions/ToDoApp";
 import FileExplorerWrapper from "./Questions/FileExplorerWrapper";
 import Hoc from "./Questions/HOC/Hoc";
-import ExampleHoc from "./Questions/HOC/ExampleHoc";
 import JiraBoardArray from "./Questions/JiraBoardArray";
 import ThemeSwitcher from "./Questions/CustomHooks/useCycle/ThemeSwitcher";
 import FetchExample from "./Questions/CustomHooks/useFetch/FetchExample";
@@ -35,17 +33,24 @@ import ModalExample from "./Questions/ReusableModal/ModalExample";
 import Otp from "./Questions/Otp";
 import Stepper from "./Questions/Stepper/Stepper";
 import IntersectionObserverExample from "./Questions/IntersectionObserver";
-import Stopwatch from "./Questions/Stopwatch";
 import TrafficSignal from "./Questions/TrafficSignal";
 import ProgressBar from "./Questions/ProgressBar";
 import ConcurrentProgressBars from "./Questions/ConcurrentProgressBar";
 import ProgressBarRunner from "./Questions/ProgressBar/ProgressBarRunner";
-import ToastMessageExample from "./Questions/ToastMessage/ToastMessageExample";
-import ToastQueueExample from "./Questions/ToastMessage/ToastQueue";
 import CustomDropdown from "./Questions/CustomDropdown/CustomDropdown";
 import CustomDropdownExample from "./Questions/CustomDropdown/CustomDropdownExample";
 import URLShortener from "./Questions/ShortenURL";
 import TicTacToe from "./Questions/TickTacToe/TicTacToe";
+import NestedComment from "./Questions/NestedComments/NestedComment";
+import Pagination from "./Questions/Pagination/PaginationExample";
+import PaginationExample from "./Questions/Pagination/PaginationExample";
+import AbortController from "./Questions/AbortController";
+import AbortControllerExample from "./Questions/AbortController";
+import Carousel from "./Questions/ImageCarouse";
+import ToastSimple from "./Questions/ToastMessage/ToastSimple";
+import ToastSimpleWithQueue from "./Questions/ToastMessage/ToastSimpleWithQueue";
+import Stopwatch from "./Questions/Stopwatch/Stopwatch";
+import Stopwatch2 from "./Questions/Stopwatch/Stopwatch2";
 
 function App() {
   const initialTree = [
@@ -238,7 +243,16 @@ function App() {
       {/* <ToastQueueExample/> */}
       {/* <CustomDropdownExample/> */}
       {/* <URLShortener/> */}
-      <TicTacToe/>
+      {/* <TicTacToe/> */}
+      {/* <NestedComment/> */}
+      {/* <PaginationExample/> */}
+      {/* <AbortControllerExample/> */}
+      {/* <Carousel/> */}
+      {/* <ToastSimple/> */}
+      {/* <Hoc/> */}
+      {/* <ToastSimpleWithQueue/> */}
+      {/* <Stopwatch/> */}
+      <Stopwatch2/>
     </div>
   );
 }

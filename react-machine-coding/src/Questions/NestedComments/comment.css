@@ -1,0 +1,13 @@
+.comment-box{
+    border: 1px solid rgb(215, 215, 215);
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.comment{
+    padding: 20px;
+    display: flex;
+    gap:20px;
+    cursor: pointer;
+}

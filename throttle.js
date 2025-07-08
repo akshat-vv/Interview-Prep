@@ -12,14 +12,13 @@ function throttle(fn, limit) {
     };
 }
 
-// Example: Scroll event handler that executes at most once per second
-const logScroll = () => {
-    console.log("Scroll event:", Date.now());
-    // Update scroll indicators, lazy load images, etc.
-};
 
-const throttledScroll = throttle(logScroll, 1000);
-window.addEventListener("scroll", throttledScroll);
+const throttled = throttle(() => {
+  console.log('Throttled at', Date.now());
+}, 1000);
+
+
+setInterval(throttled, 200);
 
 // Real-world examples:
 // - Scroll events: throttle(updateScrollPosition, 100)

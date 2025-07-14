@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid"; // run `npm install uuid`
 import InfiniteScroll from "./Questions/InfiniteScroll";
 import VirtualizationCustom from "./Questions/VirtualizationCustom";
 import { useState, useContext } from "react";
-import NestedCheckbox from "./Questions/NestedCheckbox";
+// import NestedCheckbox from "./Questions/NestedCheckbox";
 import AutoComplete from "./Questions/AutoComplete";
 import Chessboard from "./Questions/Chessboard";
 import JiraBoard from "./Questions/JiraBoard";
@@ -51,6 +51,10 @@ import ToastSimple from "./Questions/ToastMessage/ToastSimple";
 import ToastSimpleWithQueue from "./Questions/ToastMessage/ToastSimpleWithQueue";
 import Stopwatch from "./Questions/Stopwatch/Stopwatch";
 import Stopwatch2 from "./Questions/Stopwatch/Stopwatch2";
+import TypingEffect from "./Questions/TypingEffect/TypingEffect";
+import { MyApp } from "./Questions/DarkModeLightMode/MyApp";
+import EcommApp from "./Questions/EcommwithRedux/EcommApp";
+import NestedCheckbox from "./Questions/NestedCheckbox/NestedCheckbox";
 
 function App() {
   const initialTree = [
@@ -252,7 +256,11 @@ function App() {
       {/* <Hoc/> */}
       {/* <ToastSimpleWithQueue/> */}
       {/* <Stopwatch/> */}
-      <Stopwatch2/>
+      {/* <Stopwatch2/> */}
+      {/* <TypingEffect content="Hello I'm frontend Developer" delay={100}/> */}
+      {/* <MyApp/> */}
+      {/* <EcommApp/> */}
+      <NestedCheckbox />
     </div>
   );
 }

@@ -170,3 +170,28 @@ Array.prototype.myConcat = function(...args) {
 // console.log(arr.myMap(x => x * 2));
 // console.log(arr.myFilter(x => x > 2));
 // console.log(arr.myReduce((acc, val) => acc + val, 0));
+
+
+// 14. Pollyfill String.split();
+
+
+String.prototype.mySplit = function(delimiter){
+    const res = [];
+    const string = this;
+    if(delimiter === "") return Array.from(string);
+    const startSplit = (str, i)=>{
+        if(i>=string.length) return;
+        const index = str.indexOf(delimiter);
+        if(index>=0){
+            res.push(str.substring(0,index))
+            startSplit(str.substring(index + delimiter.length), index + delimiter.length)
+        }else{
+            res.push(str);
+        }
+    }
+    startSplit(string, 0);
+    return res;
+}
+
+console.log('the quick brown fox'.mySplit(" "));
+

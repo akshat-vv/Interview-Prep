@@ -65,17 +65,10 @@ function fetchWithRetry(fn, options = {}, maxTries = 4, baseDelay = 500) {
     return new Promise((resolve, reject) => {
         let attempts = 0; // Track current attempt number
 
-        /**
-         * RECURSIVE RETRY FUNCTION
-         * 
-         * This inner function handles the actual retry logic with exponential backoff.
-         * It's defined as async to handle Promise-based functions properly.
-         */
         const retryFn = async () => {
             try {
                 console.log(`🚀 Attempt ${attempts + 1}/${maxTries}`);
-                
-                // Execute the provided function (API call)
+            
                 const data = await fn();
                 
                 // Check if response exists (handle different response formats)
@@ -117,53 +110,6 @@ function fetchWithRetry(fn, options = {}, maxTries = 4, baseDelay = 500) {
         };
 
         // Start the retry process
-        retryFn();
-    });
-}
-
-/**
- * ENHANCED VERSION WITH JITTER
- * 
- * Jitter adds randomness to prevent thundering herd problem when multiple
- * clients retry at the same time.
- */
-function fetchWithRetryJitter(fn, options = {}) {
-    const {
-        maxTries = 4,
-        baseDelay = 500,
-        maxDelay = 30000,
-        jitterFactor = 0.1
-    } = options;
-
-    return new Promise((resolve, reject) => {
-        let attempts = 0;
-
-        const retryFn = async () => {
-            try {
-                const data = await fn();
-                resolve(data);
-            } catch (error) {
-                if (attempts < maxTries - 1) {
-                    // Calculate exponential delay
-                    let delay = baseDelay * Math.pow(2, attempts);
-                    
-                    // Cap the delay to prevent extremely long waits
-                    delay = Math.min(delay, maxDelay);
-                    
-                    // Add jitter: random variation of ±jitterFactor
-                    const jitter = delay * jitterFactor * (Math.random() * 2 - 1);
-                    const finalDelay = Math.max(0, delay + jitter);
-                    
-                    console.log(`⏳ Retrying in ${Math.round(finalDelay)}ms with jitter`);
-                    
-                    attempts++;
-                    setTimeout(retryFn, finalDelay);
-                } else {
-                    reject(new Error(`Failed after ${maxTries} attempts: ${error.message}`));
-                }
-            }
-        };
-
         retryFn();
     });
 }
@@ -307,11 +253,6 @@ async function fetchWithExponentialBackoff(url, options = {}) {
     return fetchWithRetry(fetchFn, {}, maxTries, baseDelay);
 }
 
-/**
- * DEMONSTRATION
- */
-console.log('=== Exponential Backoff Retry Demo ===');
-
 // Test the retry mechanism with simulated API
 fetchWithRetry(apiCall, {}, 4, 500)
     .then(data => {
@@ -320,53 +261,3 @@ fetchWithRetry(apiCall, {}, 4, 500)
     .catch(error => {
         console.error('💥 Final Error:', error.message);
     });
-
-/**
- * BACKOFF STRATEGIES COMPARISON
- * 
- * 1. FIXED DELAY:
- *    - Delays: 1s, 1s, 1s, 1s
- *    - Simple but can overwhelm recovering services
- * 
- * 2. LINEAR BACKOFF:
- *    - Delays: 1s, 2s, 3s, 4s
- *    - Better than fixed but still predictable
- * 
- * 3. EXPONENTIAL BACKOFF:
- *    - Delays: 1s, 2s, 4s, 8s
- *    - Rapidly increases delay, good for most cases
- * 
- * 4. EXPONENTIAL WITH JITTER:
- *    - Delays: 1s±10%, 2s±20%, 4s±40%, 8s±80%
- *    - Prevents thundering herd, most robust
- * 
- * INTERVIEW QUESTIONS TO PRACTICE:
- * 
- * 1. Implement exponential backoff with maximum delay cap
- * 2. Add jitter to prevent thundering herd problem
- * 3. Create retry mechanism that respects HTTP Retry-After headers
- * 4. Implement circuit breaker pattern with exponential backoff
- * 5. Design retry logic for different error types (network vs application)
- * 6. Create retry mechanism with progress callbacks
- * 7. Implement retry with cancellation support
- * 8. Design distributed retry coordination
- * 
- * BEST PRACTICES:
- * 
- * 1. Always set maximum retry limits
- * 2. Use exponential backoff with jitter
- * 3. Don't retry non-retriable errors (4xx client errors)
- * 4. Respect server-side rate limiting
- * 5. Log retry attempts for monitoring
- * 6. Consider circuit breaker for cascading failures
- * 7. Make retry behavior configurable
- * 8. Test retry logic thoroughly
- * 
- * PERFORMANCE CONSIDERATIONS:
- * 
- * 1. Total retry time can be significant with exponential backoff
- * 2. Memory usage increases with pending retry promises
- * 3. Consider timeout per attempt vs total timeout
- * 4. Monitor retry rates and success rates
- * 5. Balance between resilience and user experience
- */

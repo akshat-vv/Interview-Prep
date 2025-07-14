@@ -682,94 +682,25 @@ class DomainSystemWithTTL {
     }
 }
 
-/**
- * INTERVIEW PREPARATION TIPS
- *
- * Common JavaScript Interview Topics:
- *
- * 1. SCOPE AND CLOSURES:
- *    - Lexical scoping
- *    - Function closures
- *    - Module pattern
- *
- * 2. ASYNCHRONOUS PROGRAMMING:
- *    - Promises and async/await
- *    - Event loop understanding
- *    - Callback patterns
- *
- * 3. OBJECT-ORIENTED CONCEPTS:
- *    - Prototypal inheritance
- *    - 'this' binding rules
- *    - Class vs function constructors
- *
- * 4. FUNCTIONAL PROGRAMMING:
- *    - Higher-order functions
- *    - Pure functions
- *    - Immutability concepts
- *
- * 5. DATA STRUCTURES:
- *    - Arrays and objects manipulation
- *    - Set and Map usage
- *    - Custom data structure implementation
- *
- * 6. ALGORITHMS:
- *    - Sorting and searching
- *    - Recursion patterns
- *    - Dynamic programming basics
- *
- * 7. ES6+ FEATURES:
- *    - Destructuring
- *    - Spread/rest operators
- *    - Template literals
- *    - Modules
- *
- * 8. ERROR HANDLING:
- *    - Try-catch patterns
- *    - Promise error handling
- *    - Custom error types
- *
- * 9. PERFORMANCE:
- *    - Time/space complexity
- *    - Memory management
- *    - Optimization techniques
- *
- * 10. BROWSER APIs:
- *     - DOM manipulation
- *     - Event handling
- *     - Local storage
- *     - Fetch API
- */
 
-/**
- * PRACTICE PROBLEMS TO SOLVE:
- *
- * 1. Implement deep clone function
- * 2. Create event emitter class
- * 3. Build promise-based retry mechanism
- * 4. Implement function memoization
- * 5. Create custom array methods
- * 6. Build simple state management system
- * 7. Implement debounce/throttle from scratch
- * 8. Create custom bind/call/apply
- * 9. Build simple template engine
- * 10. Implement observer pattern
- *
- * DEBUGGING SKILLS:
- *
- * 1. Reading stack traces
- * 2. Using browser dev tools
- * 3. Console debugging techniques
- * 4. Performance profiling
- * 5. Memory leak detection
- *
- * BEST PRACTICES:
- *
- * 1. Write readable, maintainable code
- * 2. Handle edge cases properly
- * 3. Use appropriate data structures
- * 4. Consider performance implications
- * 5. Write comprehensive tests
- * 6. Document complex logic
- * 7. Follow consistent coding style
- * 8. Use meaningful variable names
- */
+const calc = {
+
+    total : 0,
+
+    add(val){
+        this.total += val
+        return this
+    },
+    multiply(val){
+        this.total *= val;
+        return this
+    },
+    subtract(val){
+       this.total -= val;
+        return this;
+    }
+
+}
+
+const result = calc.add(10).multiply(5).subtract(30).add(10);
+console.log(result.total)

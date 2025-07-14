@@ -1,0 +1,9 @@
+.typer {
+  color: red;
+  animation: blink .3s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
